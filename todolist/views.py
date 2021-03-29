@@ -44,9 +44,7 @@ def additem(request):
             item = Item(todo_item=todo_item, create_date=create_date, due_date=due_date, status=status,
                          pomodoro_estimate=pomodoro_estimate,pomodoro_completed=pomodoro_completed)
             item.save()
-            
-            context = {}
-            return render(request, 'todolist/index.html', context)
+            return redirect('/todolist/')
 
     # if a GET (or any other method) we'll create a blank form
     else:
