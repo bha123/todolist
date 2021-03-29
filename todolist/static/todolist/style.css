@@ -1,0 +1,7 @@
+li a {
+    color: green;
+}
+
+input[type=checkbox]:checked + label.form-check-label{
+    text-decoration: line-through;
+}

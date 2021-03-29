@@ -1,0 +1,66 @@
+{% if list_of_items %}
+{% for item in list_of_items %}
+
+<div class="row">
+
+    <div class="col-sim">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">
+                {{ item.todo_item}}
+            </label>
+        </div>
+    </div>
+    <div class="col-sim">
+        {{item.create_date}}
+    </div>
+{% endfor %}
+</div>        
+{% else %} 
+<p> No tasks are available</p>
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1> Bharath Todo List application</h1>
+
+    <div class="container">
+        <div class="col-sm-4">
+            Task
+        </div>
+        <div class="col-sm-4">
+            Creation Time
+        </div>
+    </div>
+    {% if list_of_items %}
+    {% for item in list_of_items %}
+
+    <div class="row">
+
+        <div class="col-sim">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                    {{ item.todo_item}}
+                </label>
+            </div>
+        </div>
+        <div class="col-sim">
+            {{item.create_date}}
+        </div>
+    {% endfor %}
+    </div>        
+    {% else %} 
+        <p> No tasks are available</p>
+    {% endif %}
+

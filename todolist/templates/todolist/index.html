@@ -1,0 +1,113 @@
+{% load static %}
+
+
+{% block javascript %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+
+    console.log("Create item ");
+
+    $.ajax({
+
+    });
+
+    function toggle_status(item, status, id) {
+        
+        console.log(id)
+        $.ajax({
+        type: 'POST',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        url: 'ajax/update_item_status',
+        data: {
+            'item':item,
+          'status':status,
+          'id': id
+        },
+        dataType: 'json',
+        success: function (data) {
+            console.log('Database updated with status ')
+        }
+      });
+        
+    };
+  
+</script>   
+
+{% endblock %}
+
+
+<link rel='stylesheet' type="text/css" href="{% static 'todolist/style.css' %}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+<div class="container-fluid">
+    <h1>Bharath Todo List application</h1>
+    
+        <div class="row">
+            <div class="col" >Task</div>
+            <div class="col" >Creation Time</div>
+            <div class="col" >Due Time</div>
+            <div class="col" >Pomodoro Estimate</div>
+            <div class="col" >Pomodoro Completed</div>
+            <div class="col" >Pomodoro Clock </div>
+            <div class="col" >Delete task</div>
+
+        </div>
+    {% if list_of_items %}
+        {% for item in list_of_items %}
+        <div class="row">
+            <div class="col">
+            {% if item.status %}
+            <div class="form-check">
+                    <input class="form-check-input" onclick="toggle_status('{{item.todo_item}}','{{item.status}}', '{{item.id}}')" type="checkbox" value=""   id="flexCheckChecked"  checked>
+                    <label class="form-check-label" for="flexCheckChecked">
+                        {{ item.todo_item}}
+                    </label>
+            </div>
+            {% else %}
+            <div class="form-check">
+                <input class="form-check-input"  onclick="toggle_status('{{item.todo_item}}', '{{item.status}}', '{{item.id}}')" type="checkbox"  value="" id="flexCheckDefault" >
+                <label class="form-check-label" for="flexCheckDefault">
+                    {{ item.todo_item}}
+                </label>
+            </div>
+            {% endif %}
+            </div>
+            <div class="col">
+                {{item.create_date}}
+            </div>
+            <div class="col">
+                {{item.due_date}}
+            </div>
+            <div class="col">
+                {{item.pomodoro_estimate}}
+            </div>
+            <div class="col">
+                {{item.pomodoro_completed}}
+            </div>
+            <div class="col">
+                <p>
+                    <button type="button"  class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
+                        <path d="M10.804 8L5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>
+                      </svg> 
+                    </button>
+            </p>        
+            </div>
+            <div class="col">
+                <a href= "deleteitem" > <button type="button"  class="btn btn-primary"> Delete</button> </a>
+            </div>
+        </div>
+        {% endfor %}
+        
+</div>
+        
+    {% else %} 
+        <p> No tasks are available</p>
+    {% endif %}
+
+    
+    <a href= "additem" ><button type="button"  class="btn btn-primary"> Add new Task</button> </a>
+
+
+
+
