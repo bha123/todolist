@@ -11,6 +11,11 @@ input[type=checkbox]:checked + label.form-check-label{
     text-align: center;
 
   }
+
+  h2{
+      text-align: center;
+      
+  }
   body { 
     background: lightblue url("img_tree.gif") no-repeat fixed center; 
   }

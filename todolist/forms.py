@@ -8,7 +8,7 @@ class ItemForm(forms.Form):
     
     #create_date = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'])
     
-    recurring_task = forms.BooleanField()
+    recurring_task = forms.BooleanField(required=False)
 
     create_date = forms.DateTimeField(initial=datetime.date.today)
     

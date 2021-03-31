@@ -25,6 +25,29 @@
         },
         dataType: 'json',
         success: function (data) {
+            console.log('Database updated with status ');
+            
+            
+        }
+      });
+        
+    };
+
+
+    function delete_item(item, status, id) {
+        
+        console.log(id)
+        $.ajax({
+        type: 'POST',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        url: 'ajax/delete_item',
+        data: {
+            'item':item,
+          'status':status,
+          'id': id
+        },
+        dataType: 'json',
+        success: function (data) {
             console.log('Database updated with status ')
         }
       });
@@ -39,9 +62,10 @@
 <link rel='stylesheet' type="text/css" href="{% static 'todolist/style.css' %}">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
-<div class="container-fluid">
-    <h1>Bharath Todo List application</h1> <a href= "additem" ><button type="button"  class="btn btn-primary"> Add new Task</button> </a>
-    <h2>Recurring Tasks</h2> 
+<h1>Bharath Todo List application</h1> <a href= "additem" ><button type="button"  class="btn btn-primary"> Add new Task</button> </a>
+<h2>Recurring Tasks</h2> 
+<div class="container-fluid" style="border:1px solid #0f0e0e;" >
+
 
     <div class="row">
         <div class="col-5" ><h3>Task</h3></div>
@@ -92,7 +116,7 @@
         </p>        
         </div>
         <div class="col">
-            <a href= "deleteitem" > <button type="button"  class="btn btn-primary"> Delete</button> </a>
+             <button type="button" onclick="delete_item('{{item.todo_item}}','{{item.status}}', '{{item.id}}')"  class="btn btn-primary"> Delete</button> 
         </div>
     </div>
     {% endfor %}
@@ -103,9 +127,9 @@
     {% else %} 
         <p> No tasks are available</p>
     {% endif %}
-    
-    <h2>Unit Tasks </h2>
-    
+</div>
+<h2>Unit Tasks</h2>
+<div class="container-fluid" style="border:1px solid #080808;" ></div>  
         <div class="row">
             <div class="col-5" ><h3>Task</h3></div>
             <div class="col" ><h3>Creation Time</h3></div>
@@ -157,7 +181,7 @@
             </p>        
             </div>
             <div class="col">
-                <a href= "deleteitem" > <button type="button"  class="btn btn-primary"> Delete</button> </a>
+                <button type="button"  onclick="delete_item('{{item.todo_item}}','{{item.status}}', '{{item.id}}')"   class="btn btn-primary"> Delete</button> 
             </div>
         </div>
         {% endfor %}
@@ -167,7 +191,70 @@
     {% else %} 
         <p> No tasks are available</p>
     {% endif %}
-
+</div>
+    <h2>Completed Tasks</h2>
+    <div class="container-fluid" style="border:1px solid #080808;" ></div>  
+            <div class="row">
+                <div class="col-5" ><h3>Task</h3></div>
+                <div class="col" ><h3>Creation Time</h3></div>
+                <div class="col" ><h3>Due Time</h3></div>
+                <div class="col" ><h3>Pomodoro Estimate</h3></div>
+                <div class="col" ><h3>Pomodoro Completed</h3></div>
+                <div class="col" ><h3>Pomodoro Clock </h3> </div>
+                <div class="col" ><h3>Delete task</h3></div>
+            </div>
+        {% if completed_items %}
+            {% for item in completed_items %}
+            <div class="row">
+                <div class="col-5">
+                {% if item.status %}
+                <div class="form-check">
+                        <input class="form-check-input" onclick="toggle_status('{{item.todo_item}}','{{item.status}}', '{{item.id}}')" type="checkbox" value=""   id="flexCheckChecked"  checked>
+                        <label class="form-check-label" for="flexCheckChecked">
+                            {{ item.todo_item}}
+                        </label>
+                </div>
+                {% else %}
+                <div class="form-check">
+                    <input class="form-check-input"  onclick="toggle_status('{{item.todo_item}}', '{{item.status}}', '{{item.id}}')" type="checkbox"  value="" id="flexCheckDefault" >
+                    <label class="form-check-label" for="flexCheckDefault">
+                        {{ item.todo_item}}
+                    </label>
+                </div>
+                {% endif %}
+                </div>
+                <div class="col">
+                    {{item.create_date}}
+                </div>
+                <div class="col">
+                    {{item.due_date}}
+                </div>
+                <div class="col">
+                    {{item.pomodoro_estimate}}
+                </div>
+                <div class="col">
+                    {{item.pomodoro_completed}}
+                </div>
+                <div class="col">
+                    <p>
+                        <button type="button"  class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
+                            <path d="M10.804 8L5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>
+                          </svg> 
+                        </button>
+                </p>        
+                </div>
+                <div class="col">
+                     <button type="button"  onclick="delete_item('{{item.todo_item}}','{{item.status}}', '{{item.id}}')"  class="btn btn-primary"> Delete</button> 
+                </div>
+            </div>
+            {% endfor %}
+            
+    </div>
+            
+        {% else %} 
+            <p> No tasks are available</p>
+        {% endif %}
     
     <a href= "additem" ><button type="button"  class="btn btn-primary"> Add new Task</button> </a>
 

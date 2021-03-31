@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Item
+from .models import Item, DeleteItem
 from django import forms
 from .forms import ItemForm, ItemUpdateForm
 from django.shortcuts import redirect
@@ -9,10 +9,10 @@ from django.http import QueryDict
 # Create your views here.
 
 def index(request):
-    recurring_items = Item.objects.filter(recurring_task='1').order_by('status')
-    
-    list_of_items = Item.objects.filter(recurring_task='0').order_by('status')
-    context = {'recurring_items': recurring_items, 'list_of_items': list_of_items,}
+    recurring_items = Item.objects.filter(recurring_task='1').order_by('status') 
+    completed_items = Item.objects.filter(status='1').order_by('pomodoro_estimate')   
+    list_of_items = Item.objects.filter(recurring_task='0',status='0').order_by('-create_date')
+    context = {'recurring_items': recurring_items, 'list_of_items': list_of_items, 'completed_items': completed_items,}
     return render(request, 'todolist/index.html', context)
 
 def detail(request, item_id):
@@ -43,9 +43,16 @@ def additem(request):
             pomodoro_estimate = form.cleaned_data['pomodoro_estimate']
             pomodoro_completed = form.cleaned_data['pomodoro_completed']
             recurring_task = form.cleaned_data['recurring_task']
+            if recurring_task == None:
+                recurring_task = False
             
-            item = Item(todo_item=todo_item, create_date=create_date, due_date=due_date, status=status,
-                         pomodoro_estimate=pomodoro_estimate,pomodoro_completed=pomodoro_completed)
+            item = Item(todo_item=todo_item, 
+                        create_date=create_date, 
+                        due_date=due_date, 
+                        status=status,
+                        recurring_task=recurring_task,
+                        pomodoro_estimate=pomodoro_estimate,
+                        pomodoro_completed=pomodoro_completed)
             item.save()
             return redirect('/todolist/')
 
@@ -96,6 +103,33 @@ def update_item_status(request):
         Item.objects.filter(pk=item_id).update(status=updated_status)
         
     return HttpResponse("You updated the db status ")
+
+
+
+
+def deleteItem(request):
+    if request.method == 'POST':
+        item_id = int(QueryDict(request.body)['id'])
+        if item_id != None:
+            # saving the deleted item in deleted table 
+            deleted_item = Item.objects.get(id=item_id)
+            deleteObj = DeleteItem(todo_item=deleted_item.todo_item, 
+                               create_date=deleted_item.create_date, 
+                               due_date=deleted_item.due_date, 
+                               status=deleted_item.status, 
+                               recurring_task=deleted_item.recurring_task,
+                               pomodoro_estimate=deleted_item.pomodoro_estimate,
+                               pomodoro_completed=deleted_item.pomodoro_completed)
+            #deleteObj = DeletedItem(deleted_item)
+            deleteObj.save()
+            # delete it from items table 
+            Item.objects.filter(pk=item_id).delete()
+            return redirect('/todolist/')
+
+
+
+
+
 
 
 
