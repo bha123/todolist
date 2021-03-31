@@ -12,6 +12,7 @@ class Item(models.Model):
     status = models.BooleanField('Completed')
     pomodoro_estimate = models.IntegerField('Pomodoro Estimate')
     pomodoro_completed = models.IntegerField('Pomodoro Completed')
+    recurring_task = models.BooleanField('Recurring')
 
     def __str__(self):
         return self.todo_item

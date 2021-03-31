@@ -9,8 +9,10 @@ from django.http import QueryDict
 # Create your views here.
 
 def index(request):
-    list_of_items = Item.objects.all().order_by('status')
-    context = {'list_of_items': list_of_items,}
+    recurring_items = Item.objects.filter(recurring_task='1').order_by('status')
+    
+    list_of_items = Item.objects.filter(recurring_task='0').order_by('status')
+    context = {'recurring_items': recurring_items, 'list_of_items': list_of_items,}
     return render(request, 'todolist/index.html', context)
 
 def detail(request, item_id):
@@ -40,6 +42,7 @@ def additem(request):
             status = False
             pomodoro_estimate = form.cleaned_data['pomodoro_estimate']
             pomodoro_completed = form.cleaned_data['pomodoro_completed']
+            recurring_task = form.cleaned_data['recurring_task']
             
             item = Item(todo_item=todo_item, create_date=create_date, due_date=due_date, status=status,
                          pomodoro_estimate=pomodoro_estimate,pomodoro_completed=pomodoro_completed)
