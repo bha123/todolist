@@ -5,3 +5,12 @@ li a {
 input[type=checkbox]:checked + label.form-check-label{
     text-decoration: line-through;
 }
+
+ h1 {
+    font-family: Fantasy;
+    text-align: center;
+
+  }
+  body { 
+    background: lightblue url("img_tree.gif") no-repeat fixed center; 
+  }
