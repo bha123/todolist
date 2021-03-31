@@ -25,7 +25,7 @@ SECRET_KEY = 'lklo2_$o@59!v%vpe99if-0_g$mi8ib=c@64y86ewa0pi%4enm'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.7']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
