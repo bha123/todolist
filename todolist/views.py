@@ -4,7 +4,9 @@ from .models import Item, DeleteItem
 from django import forms
 from .forms import ItemForm, ItemUpdateForm
 from django.shortcuts import redirect
-from django.http import QueryDict
+from django.http import QueryDict, JsonResponse
+from django.forms.models import model_to_dict
+import json
 #from django.db.models import Item
 # Create your views here.
 
@@ -22,6 +24,8 @@ def detail(request, item_id):
 def thanks(request):
     context = {}
     return  render(request, 'todolist/thanks.html', context)
+
+
 
 def additem(request):
     # if this is a POST request we need to process the form data
@@ -62,33 +66,34 @@ def additem(request):
 
     return render(request, 'todolist/additem.html', {'form': form})
 
-'''
-def update_item_status(request):
-    if request.method == 'POST':
-        item_id = QueryDict(request.body)['id']
-        
-        present_status = QueryDict(request.body)['status']
-        print("present status: ",present_status)
-        
-        if present_status == 'False':
-            updated_status = True
-        else:
-            updated_status = False
-        updateItem = ItemForm(Item.objects.get(id=item_id))
-        
-        print("updated status", updated_status)
-        print(updateItem.todo_item)
-        updateItem.status = updated_status
-        updateItem.id = item_id
-        #updateItem
-        print(updateItem.status)
-        updateItem.save()
 
-        testItem = Item.objects.get(id=item_id)
-        print(testItem)
-     
-    return HttpResponse("You updated the db status ")
-'''
+def edit_item(request,id):
+    if request.method == "POST":
+        tobe_updated_item = Item.objects.get(id=id)
+        item_keys = ['todo_item','create_date','due_date','status','recurring_task','pomodoro_estimate','pomodoro_completed']
+        print(request.POST.get('status',False))
+        Item.objects.filter(pk=id).update(
+            todo_item=request.POST.get('todo_item'), 
+            create_date=request.POST.get('create_date'), 
+            due_date=request.POST.get('due_date'), 
+            status= request.POST.get('status',False),
+            recurring_task=request.POST.get('recurring_task', False),
+            pomodoro_estimate=request.POST.get('pomodoro_estimate'),
+            pomodoro_completed=request.POST.get('pomodoro_completed')
+            )
+        return redirect('/todolist/')
+        
+        
+        
+    if id:
+        edit_item = Item.objects.get(id=id)
+        form = ItemUpdateForm(instance=edit_item)
+
+        print("showing the form")
+
+        return render(request,'todolist/editItem.html',{'form':form})
+    
+
 
 def update_item_status(request):
     if request.method == 'POST':
@@ -102,32 +107,34 @@ def update_item_status(request):
             updated_status = False
         Item.objects.filter(pk=item_id).update(status=updated_status)
         
-    return HttpResponse("You updated the db status ")
+    return redirect("You updated the db status ")
 
 
 
 
-def deleteItem(request):
-    if request.method == 'POST':
-        item_id = int(QueryDict(request.body)['id'])
-        if item_id != None:
+def deleteItem(request,id):
+
+    item_id = id
+    if item_id :
             # saving the deleted item in deleted table 
-            deleted_item = Item.objects.get(id=item_id)
-            deleteObj = DeleteItem(todo_item=deleted_item.todo_item, 
+        deleted_item = Item.objects.get(id=item_id)
+        deleteObj = DeleteItem(todo_item=deleted_item.todo_item, 
                                create_date=deleted_item.create_date, 
                                due_date=deleted_item.due_date, 
                                status=deleted_item.status, 
                                recurring_task=deleted_item.recurring_task,
                                pomodoro_estimate=deleted_item.pomodoro_estimate,
                                pomodoro_completed=deleted_item.pomodoro_completed)
-            #deleteObj = DeletedItem(deleted_item)
-            deleteObj.save()
-            # delete it from items table 
-            Item.objects.filter(pk=item_id).delete()
-            return redirect('/todolist/')
+        #deleteObj = DeletedItem(deleted_item)
+        deleteObj.save()
+        # delete it from items table 
+        Item.objects.filter(pk=item_id).delete()
+        return redirect('/todolist/')
 
 
+def pomodoroTimer(request,id):
 
+    return render(request,"todolist/pomodorotimer.html")
 
 
 

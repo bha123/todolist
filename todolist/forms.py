@@ -16,9 +16,14 @@ class ItemForm(forms.Form):
     #status = forms.BooleanField()
     pomodoro_estimate = forms.IntegerField()
     pomodoro_completed = forms.IntegerField()
-
-class ItemUpdateForm(forms.Form):
     class Meta:
         model = Item
         fields = "__all__"
+
+
+class ItemUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Item
+        fields = "__all__"
+   
 
