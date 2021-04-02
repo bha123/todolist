@@ -30,8 +30,8 @@ function onPomodoroTimer(){
   stopTimer();
 
   gHours = 0;
-  gMinutes = 0;
-  gSeconds = 6;
+  gMinutes = 25;
+  gSeconds = 0;
 
   resetTimer();
 
@@ -291,5 +291,5 @@ function pomodoroCountUpdate(id) {
   <br>
 
   <div class="text-center">
-    <a href= "{% url 'todolist:index' %}" ><button type="button"  class="btn btn-warning"> Add new Task</button> </a>
+    <a href= "{% url 'todolist:index' %}" ><button type="button"  class="btn btn-warning">Home</button> </a>
 </div>
