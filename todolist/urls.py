@@ -11,5 +11,6 @@ urlpatterns=[
     path('editItem/<int:id>', views.edit_item, name="edit_item"),
     path('deleteItem/<int:id>', views.deleteItem, name="deleteItem"),
     path('pomodorotimer/<int:id>', views.pomodoroTimer, name="pomodoroTimer"),
+    path('pomodorotimer/ajax/updatepomodoro', views.updatePomodoroCount, name="updatePomodoroCount"),
     
 ]

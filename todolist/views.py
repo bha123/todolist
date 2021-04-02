@@ -133,10 +133,28 @@ def deleteItem(request,id):
 
 
 def pomodoroTimer(request,id):
+    print(id)
+    item_id = id
+    if item_id :
+            # saving the deleted item in deleted table 
+        pomodoro_item = Item.objects.get(id=item_id)
 
-    return render(request,"todolist/pomodorotimer.html")
+    return render(request,"todolist/pomodorotimer.html",{'item':pomodoro_item})
 
 
-
-
-
+def updatePomodoroCount(request):
+    if request.method == 'POST':
+        print("reached pomodoro count")
+        item_id = QueryDict(request.body)['id']
+        print("update item id",item_id)
+        
+        pomodoro_item = Item.objects.get(id=item_id)
+        print(pomodoro_item.pomodoro_completed)
+        
+        if pomodoro_item:
+            count = pomodoro_item.pomodoro_completed  + 1
+            print(count)
+            Item.objects.filter(pk=item_id).update(pomodoro_completed=count)
+            itemDict = {'id':item_id, 'pomdoro_completed':count}
+            return HttpResponse(json.dumps(itemDict), content_type='application/json')           
+            
