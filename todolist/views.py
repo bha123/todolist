@@ -69,17 +69,16 @@ def additem(request):
 
 def edit_item(request,id):
     if request.method == "POST":
-        tobe_updated_item = Item.objects.get(id=id)
-        item_keys = ['todo_item','create_date','due_date','status','recurring_task','pomodoro_estimate','pomodoro_completed']
-        print(request.POST.get('status',False))
+        if request.POST.get('recurring_task', False) == 'on':
+            recurringStatus = True
         Item.objects.filter(pk=id).update(
             todo_item=request.POST.get('todo_item'), 
             create_date=request.POST.get('create_date'), 
             due_date=request.POST.get('due_date'), 
             status= request.POST.get('status',False),
-            recurring_task=request.POST.get('recurring_task', False),
+            recurring_task=recurringStatus,
             pomodoro_estimate=request.POST.get('pomodoro_estimate'),
-            pomodoro_completed=request.POST.get('pomodoro_completed')
+            pomodoro_completed=request.POST.get('pomodoro_completed'),
             )
         return redirect('/todolist/')
         
