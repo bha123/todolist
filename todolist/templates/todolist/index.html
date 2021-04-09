@@ -62,10 +62,21 @@
 <link rel='stylesheet' type="text/css" href="{% static 'todolist/style.css' %}">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
-<h1>Bharath Todo List application</h1> <a href= "additem" >
+<h1>Bharath Todo List application</h1> 
+
+
+<a href= "additem" >
 <div class="text-center">
     <button type="button"  class="btn btn-warning" > Add New Task</button> </a>
 </div>
+
+<p> Logged in user: {{logged_user}}</p>
+
+<a href= "signout" >
+    <div class="text-left">
+        <button type="button"  class="btn btn-warning" >Logout</button> 
+    </div>
+</a>
 <h2>Recurring Tasks</h2> 
 
 <div class="container-fluid" style="border:1px solid #0f0e0e;" >

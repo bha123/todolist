@@ -19,7 +19,7 @@ var remainingTime;
 
 var countdownHandle;
 
-var audio = new Audio('./sounds/beep.mp3');
+var audio = new Audio('/sounds/beep.mp3');
 
 $(document).ready(function() {
   onPomodoroTimer();
@@ -30,8 +30,8 @@ function onPomodoroTimer(){
   stopTimer();
 
   gHours = 0;
-  gMinutes = 25;
-  gSeconds = 0;
+  gMinutes = 0;
+  gSeconds = 6;
 
   resetTimer();
 

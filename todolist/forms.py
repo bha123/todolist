@@ -1,7 +1,7 @@
 from django import forms
 import datetime
 from .models import Item
-
+from .models import CustomUser
 class ItemForm(forms.Form):
     todo_item =  forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":20}))
     #create_date = forms.DateTimeField(initial=datetime.date.today)
@@ -27,3 +27,7 @@ class ItemUpdateForm(forms.ModelForm):
         fields = "__all__"
    
 
+class CustomUserForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = "__all__"
