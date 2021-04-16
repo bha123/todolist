@@ -42,3 +42,8 @@ body {
 .row:nth-child(odd) {
     background: rgb(255, 254, 254)
 }
+
+p#timer {
+    text-align: center;
+    text-decoration-color: blue;
+}

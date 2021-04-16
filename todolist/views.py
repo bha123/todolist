@@ -87,23 +87,26 @@ def additem(request):
 
 @login_required(login_url='login/')
 def edit_item(request,id):
-    
     if request.user.is_authenticated:
         user = request.user
-
         if request.method == "POST":
-            if request.POST.get('recurring_task', False) == 'on':
+            recurringStatus = status = False # 040 6810 2816 2845 2840
+            if request.POST.get('recurring_task') == 'on':
                 recurringStatus = True
-                Item.objects.filter(pk=id).update(
+            if request.POST.get('status') == 'on':
+                status = True
+            Item.objects.filter(pk=id).update(
+                user = request.POST.get('user'),
                 todo_item=request.POST.get('todo_item'), 
                 create_date=request.POST.get('create_date'), 
                 due_date=request.POST.get('due_date'), 
-                status= request.POST.get('status',False),
+                status=status,
                 recurring_task=recurringStatus,
                 pomodoro_estimate=request.POST.get('pomodoro_estimate'),
                 pomodoro_completed=request.POST.get('pomodoro_completed'),
                 )
             return redirect('todolist:index')
+            
             
         if id:
             edit_item = Item.objects.get(id=id)
@@ -134,8 +137,11 @@ def deleteItem(request,id):
     item_id = id
     if item_id :
             # saving the deleted item in deleted table 
+        user = request.user
         deleted_item = Item.objects.get(id=item_id)
-        deleteObj = DeleteItem(todo_item=deleted_item.todo_item, 
+        deleteObj = DeleteItem(
+                               user=request.user,
+                               todo_item=deleted_item.todo_item, 
                                create_date=deleted_item.create_date, 
                                due_date=deleted_item.due_date, 
                                status=deleted_item.status, 
@@ -269,8 +275,9 @@ def checkAndUpdateRecurringTask():
     # table to todays date
     if today != str(last_date):
         # Get all rows which are recurring 
-        # update them with "o" for pomodoro completed
-        Item.objects.filter(recurring_task='1').update(pomodoro_completed=0)
+        # update them with "o" for pomodoro completed & 
+        # set Status back to not completed
+        Item.objects.filter(recurring_task='1').update(pomodoro_completed=0,status=False)
         print("pomodoro values reseted for recurring task")
         dateStatusCheck.objects.filter(id="1").update(today_date=today)
 

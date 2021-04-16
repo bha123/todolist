@@ -5,12 +5,8 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 
-    console.log("Create item ");
 
-    $.ajax({
-
-    });
-
+let start = new Date();    
 var gHours = 0;
 var gMinutes = 0;
 var gSeconds = 0;
@@ -30,8 +26,8 @@ function onPomodoroTimer(){
   stopTimer();
 
   gHours = 0;
-  gMinutes = 0;
-  gSeconds = 6;
+  gMinutes = 25;
+  gSeconds = 0;
 
   resetTimer();
 
@@ -77,18 +73,7 @@ function onStartTimer(id){
   console.log(id);
   item_id = id;
   stopTimer();
-  startTimer();
-  var x = document.getElementById("pomodoroButton").className; 
-  if (x == 'btn btn-default btn-success'){
-          pomodoroCountUpdate(item_id);
-          console.log("The element is pomodoro");
-
-      }
-
-      else{
-  console.log("The element is not pomodoro");
-      }
-
+  startTimer(id);
 };
 
 function onStopTimer(){
@@ -108,9 +93,12 @@ function startAlarm(){
   }
 }
 
-function startTimer() {
+function startTimer(id) {
+
+
   countdownHandle=setInterval(function() {
-    decrementTimer();
+    
+    decrementTimer(id);
   },1000);
   
  
@@ -136,6 +124,7 @@ function renderTimer(){
 
   var deltaTime=remainingTime;
 
+  //var deltaTime=count;
   var hoursValue=Math.floor(deltaTime/(1000*60*60));
   deltaTime=deltaTime%(1000*60*60);
 
@@ -199,12 +188,24 @@ function formatTime(intergerValue){
 
 }
 
-function decrementTimer(){
+function decrementTimer(id){
 
   remainingTime-=(1*1000);
 
   if(remainingTime<1000){
     onStopTimer();
+    var x = document.getElementById("pomodoroButton").className; 
+    if (x == 'btn btn-default btn-success' ){
+          pomodoroCountUpdate(id);
+          console.log("The element is pomodoro");
+
+      }
+
+      else{
+          console.log("The element is not pomodoro");
+      }
+
+
   }
 
   renderTimer();
@@ -223,7 +224,7 @@ function pomodoroCountUpdate(id) {
         },
         dataType: 'json',
         success: function (data) {
-          alert("Starting the pomodoro");
+          alert("Pomodoro Completed ");
         }
       });
 
@@ -261,6 +262,10 @@ function pomodoroCountUpdate(id) {
         </span>
       </h2>
     </div>
+
+    <p id="timer">
+      00:00:00
+    </p>
     <div class="panel panel-default">
       <div class="panel-body text-center">
         <div class="timer-time timer-container">
