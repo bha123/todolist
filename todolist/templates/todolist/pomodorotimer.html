@@ -5,17 +5,17 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 
-
-let start = new Date();    
+ 
 var gHours = 0;
 var gMinutes = 0;
 var gSeconds = 0;
 
 var remainingTime;
+var  pomodoroCountTrack = 0;
 
 var countdownHandle;
 
-var audio = new Audio('/sounds/beep.mp3');
+var audio = new Audio("{% static 'todolist/sounds/alarm_clock_2015.mp3' %}");
 
 $(document).ready(function() {
   onPomodoroTimer();
@@ -196,9 +196,18 @@ function decrementTimer(id){
     onStopTimer();
     var x = document.getElementById("pomodoroButton").className; 
     if (x == 'btn btn-default btn-success' ){
+          console.log(pomodoroCountTrack);
           pomodoroCountUpdate(id);
           console.log("The element is pomodoro");
-
+          if (pomodoroCountTrack < 4){
+            onShortTimer();
+            pomodoroCountTrack++;
+          }
+          else{
+            onLongTimer();
+            pomodoroCountTrack = 0;
+          }
+          
       }
 
       else{
@@ -209,6 +218,7 @@ function decrementTimer(id){
   }
 
   renderTimer();
+ 
 }
   
 
@@ -263,9 +273,6 @@ function pomodoroCountUpdate(id) {
       </h2>
     </div>
 
-    <p id="timer">
-      00:00:00
-    </p>
     <div class="panel panel-default">
       <div class="panel-body text-center">
         <div class="timer-time timer-container">
