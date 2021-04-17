@@ -13,6 +13,8 @@ var gSeconds = 0;
 var remainingTime;
 var  pomodoroCountTrack = 0;
 
+
+
 var countdownHandle;
 
 var audio = new Audio("{% static 'todolist/sounds/alarm_clock_2015.mp3' %}");
@@ -95,11 +97,13 @@ function startAlarm(){
 
 function startTimer(id) {
 
+  var initialTime = new Date().getTime();
+
 
   countdownHandle=setInterval(function() {
     
-    decrementTimer(id);
-  },1000);
+    decrementTimer(id,initialTime);
+  },2000);
   
  
  
@@ -112,11 +116,20 @@ function stopTimer() {
 }
 
 function resetTimer(){
+  
+
 
   remainingTime = (gHours*60*60*1000)+
   (gMinutes*60*1000)+
   (gSeconds*1000);
   renderTimer();
+}
+
+
+
+function checkTimer(){
+    
+
 }
 
 function renderTimer(){
@@ -132,7 +145,6 @@ function renderTimer(){
   deltaTime=deltaTime%(1000*60);
 
   var secondsValue=Math.floor(deltaTime/(1000));
-
   animateTime(hoursValue, minutesValue, secondsValue);
 };
 
@@ -188,9 +200,29 @@ function formatTime(intergerValue){
 
 }
 
-function decrementTimer(id){
+function decrementTimer(id,initialTime){
 
-  remainingTime-=(1*1000);
+
+  console.log('Initial time ',initialTime);
+  var latestEpoch = new Date().getTime();
+  // Get Caliculated time 
+  var x = document.getElementById("pomodoroButton").className; 
+  var y = document.getElementById("longButton").className
+    if (x == 'btn btn-default btn-success' ){
+      remainingTime = (initialTime+1500000) -  latestEpoch;
+     
+    }
+    else if (y == 'btn btn-default btn-success') 
+    {
+        remainingTime = (initialTime+900000) -  latestEpoch;
+    }
+    else{
+        remainingTime = (initialTime+300000) -  latestEpoch;
+    }
+  
+
+  console.log('remainingTime',remainingTime);
+  //remainingTime-=(1*1000);
 
   if(remainingTime<1000){
     onStopTimer();
