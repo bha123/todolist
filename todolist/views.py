@@ -260,7 +260,7 @@ def login(request):
 @login_required(login_url='login/')
 def signout(request):
     logout(request)
-    return redirect('/todolist/')
+    return redirect('todolist:login')
 
 
 def checkAndUpdateRecurringTask():
@@ -280,4 +280,5 @@ def checkAndUpdateRecurringTask():
         Item.objects.filter(recurring_task='1').update(pomodoro_completed=0,status=False)
         print("pomodoro values reseted for recurring task")
         dateStatusCheck.objects.filter(id="1").update(today_date=today)
+
 
