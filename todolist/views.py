@@ -252,10 +252,8 @@ def login(request):
                 loginUser(request , user)
                 return redirect('/todolist/')
         else:
-            context = {
-                "form" : form
-            }
-            return render(request , 'todolist/login.html' , context=context )
+
+            return redirect('todolist:login')
 
 @login_required(login_url='login/')
 def signout(request):
