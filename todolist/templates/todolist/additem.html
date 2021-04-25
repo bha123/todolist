@@ -1,13 +1,82 @@
 {% load static %}
 
-<link rel='stylesheet' type="text/css" href="{% static 'todolist/style.css' %}">
+
+<title>Todolist - Bharath</title>
+
+<!-- Bootstrap 4 -->
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+<link rel='stylesheet' type="text/css" href="{% static 'todolist/style.css' %}">
 
 <h2> Add New Item </h2>
 
+
+
+<!--
+
+<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+ Creation Date:   {{ form.create_date }}
+    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+    </div>
+  </div>
+  
+  <script>
+    $(function () {
+      $("#datetimepicker1").datetimepicker({
+        format: 'DD/MM/YYYY HH:mm',
+      });
+    });
+  </script>
+-->
+<!--
 <form action = "" method = "post">
     {% csrf_token %}
     {{form.as_p }}
-    <input type="submit" value=Submit>
+    <input type="submit" value="Add Item">
 </form>
+-->
+<form action="" method="post">
+  {% csrf_token %}
+  <div class="mb-3">
+      <label for="id_todo_item">Item:</label>
+      <textarea id="todo_item" type="text" name="todo_item" class="form-control" rows=3 required> </textarea>    
+  </div>
+  <div class="mb-3">
+      <label for="id_recurring_task">Recurring task:</label>
+      <input type="checkbox" name="recurring_task" id="id_recurring_task">
+  </div>
 
+  <div>
+      <label for="id_create_date">Create date:</label>
+    </br>
+      <input type="datetime-local" name="create_date" value="" required="" id="id_create_date">
+  </div>
+  <div>
+    <label for="id_due_date">Due date:</label>
+    </br>
+    <input type="datetime-local" name="due_date" value="" required="" id="id_due_date">
+    </div>
+
+    <div>
+      <label for="id_pomodoro_estimate">Pomodoro estimate:</label>
+      </br>
+      <input type="number" name="pomodoro_estimate" required="" value="3" id="id_pomodoro_estimate">
+    </div>
+
+
+  <div>
+    <label for="id_pomodoro_completed">Pomodoro completed:</label>
+  </br>
+    <input type="number" name="pomodoro_completed" required=""  value="0" id="id_pomodoro_completed">
+  </div>
+</br>
+
+</br>
+<button type="submit" name="save" class="block" value="save"> Save</button>
+</br>
+</br>
+<a href= "{% url 'todolist:index' %}" ><button type="submit"  class="home">Home</button> </a>
+</form>

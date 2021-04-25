@@ -18,7 +18,7 @@ h2{
 }
 
 body { 
-    background-color: rgb(61, 92, 230) ; 
+    background-color: rgb(255, 255, 255) ; 
 }
 
 .container-fluid {
@@ -43,7 +43,32 @@ body {
     background: rgb(255, 254, 254)
 }
 
-p#timer {
-    text-align: center;
-    text-decoration-color: blue;
+.delete{
+    padding: 0;
+    border: none;
+    background: none;
 }
+
+button.block {
+  display: block;
+  width: 100%;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+}
+
+button.home {
+    display: block;
+    width: 100%;
+    border: none;
+    background-color: #1c30e2;
+    color: white;
+    padding: 14px 28px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+  }
