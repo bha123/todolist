@@ -34,6 +34,32 @@
     };
 
 
+    function filter_item(value){
+
+        console.log("Selected value "+ value)
+            
+        if(value != 0)
+        {
+            $(document).ready(function()
+            {
+                $( "li" ).each(function( index ) {
+                        console.log( index + ": " + $( this ).val() );
+
+                        if(value != $(this).val() ){
+                            $(this).hide();
+                        }
+
+
+                });
+            });
+        }
+        else{
+            location.reload();
+        }    
+    };
+
+
+
     function delete_item(item, status, id) {
 
         console.log(id)
@@ -81,6 +107,16 @@
 </a>
 
 
+<div>
+    <label for="id_itemPriority">Priority Filter</label>
+    <select id="id_checkItemPriority" name="checkItemPriority" size="1" onchange="filter_item(value)">
+      <option value="0">All</option> 
+      <option value="1">Not Urgent Not Important</option>
+      <option value="2">Not Urgent Important</option>
+      <option value="3">Urgent Not Important</option>
+      <option value="4">Urgent Important</option>
+    </select>
+  </div>
 
 
 <h2>Recurring Tasks</h2>
@@ -88,10 +124,9 @@
 <ui class="list-group">
 
 
-
     {% if recurring_items %}
     {% for item in recurring_items %}
-    <li class="list-group-item flex-row align-items-start ">
+    <li class="list-group-item flex-row align-items-start " value="{{item.itemPriority}}" id="itemMain">
         <!-- <a href="#" class="list-group-item list-group-item-action flex-column align-items-start"> -->
         <div class="d-flex flex-column align-items-between">
 
@@ -138,6 +173,12 @@
                 <div class="p-2 flex-grow-1">
                     <p class="mb-1" style="font-size: 150%;">Pomodoro Estimated/Completed:
                         {{item.pomodoro_estimate}} / {{item.pomodoro_completed}}</p>
+                </div>
+            </div>
+
+            <div class="d-flex  flex-row align-items-between">
+                <div class="p-2 flex-grow-1">
+                    <p class="mb-1" style="font-size: 150%;">Priority: {{item.itemPriority}}</p>
                 </div>
                 <div class="ms-auto p-2">
                     <a href="deleteItem/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">🗑️</div></a>
@@ -167,11 +208,11 @@
 
     {% if list_of_items %}
     {% for item in list_of_items %}
-    <li class="list-group-item flex-row align-items-start ">
+    <li class="list-group-item flex-row align-items-start " value="{{item.itemPriority}}" id="itemMain">
         <!-- <a href="#" class="list-group-item list-group-item-action flex-column align-items-start"> -->
         <div class="d-flex flex-column align-items-between">
 
-            <div class="d-flex flex-row align-items-between">
+            <div class="d-flex flex-row align-items-between" >
                 {% if item.status %}
                 <div class="p-2 flex-grow-1">
                     <h3 class="mb-1">
@@ -217,6 +258,13 @@
                 <div class="p-2 flex-grow-1">
                     <p class="mb-1" style="font-size: 150%;">Pomodoro Estimated/Completed:
                         {{item.pomodoro_estimate}} / {{item.pomodoro_completed}}</p>
+                </div>
+            </div>
+
+            
+            <div class="d-flex  flex-row align-items-between">
+                <div class="p-2 flex-grow-1">
+                    <p class="mb-1" style="font-size: 150%;">Priority: {{item.itemPriority}}</p>
                 </div>
                 <div class="ms-auto p-2">
                     <a href="deleteItem/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">🗑️</div></a>
@@ -244,9 +292,9 @@
 
     {% if completed_items %}
     {% for item in completed_items %}
-    <li class="list-group-item flex-row align-items-start ">
+    <li class="list-group-item flex-row align-items-start " value="{{item.itemPriority}}" id="itemMain">
         <!-- <a href="#" class="list-group-item list-group-item-action flex-column align-items-start"> -->
-        <div class="d-flex flex-column align-items-between">
+        <div class="d-flex flex-column align-items-between" >
 
             <div class="d-flex flex-row align-items-between">
                 {% if item.status %}
@@ -290,15 +338,25 @@
                     <a href="editItem/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">✏️</div></a>
                 </div>
             </div>
+
+            
             <div class="d-flex  flex-row align-items-between">
                 <div class="p-2 flex-grow-1">
-                    <p class="mb-1" style="font-size: 150%;">Pomodoro Estimated/Completed:
-                        {{item.pomodoro_estimate}} / {{item.pomodoro_completed}}</p>
+                    <p class="mb-1" style="font-size: 150%;">Priority: {{item.priority}}</p>
                 </div>
                 <div class="ms-auto p-2">
                     <a href="deleteItem/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">🗑️</div></a>
                 </div>
             </div>
+
+            <div class="d-flex  flex-row align-items-between">
+                <div class="p-2 flex-grow-1">
+                    <p class="mb-1" style="font-size: 150%;">Pomodoro Estimated/Completed:
+                        {{item.pomodoro_estimate}} / {{item.pomodoro_completed}}</p>
+                </div>
+
+            </div>
+
         </div>
 
 

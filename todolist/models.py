@@ -25,6 +25,8 @@ class Item(models.Model):
     pomodoro_estimate = models.IntegerField('Pomodoro Estimate')
     pomodoro_completed = models.IntegerField('Pomodoro Completed')
     recurring_task = models.BooleanField('Recurring')
+    itemPriority = models.IntegerField('priority')
+    tags = models.CharField(max_length=100)
 
     def __str__(self):
         return self.todo_item
@@ -41,6 +43,8 @@ class DeleteItem(models.Model):
     pomodoro_estimate = models.IntegerField('Pomodoro Estimate')
     pomodoro_completed = models.IntegerField('Pomodoro Completed')
     recurring_task = models.BooleanField('Recurring')    
+    itemPriority = models.IntegerField('priority')
+    tags = models.CharField(max_length=100)
 
     def __str__(self):
         return self.todo_item
@@ -64,6 +68,7 @@ class RecurringItemStatus(models.Model):
         return self.todo_item
 
 
-
-
-    
+class telegrambotUserMapping(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    telebotId = models.TextField('telegramId')
+    event_time = models.DateTimeField('Event Timestamp')
