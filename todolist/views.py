@@ -67,7 +67,7 @@ def additem(request):
                 recurring_task = form.cleaned_data['recurring_task']
                 if recurring_task == None:
                     recurring_task = False
-                
+                itemPriority = form.cleaned_data['itemPriority']
                 item = Item(todo_item=todo_item, 
                             create_date=create_date, 
                             due_date=due_date, 
@@ -75,7 +75,8 @@ def additem(request):
                             recurring_task=recurring_task,
                             pomodoro_estimate=pomodoro_estimate,
                             pomodoro_completed=pomodoro_completed,
-                            user=user)
+                            user=user,
+                            itemPriority=itemPriority)
                 item.save()
                 return redirect('todolist:index')
 
@@ -104,6 +105,7 @@ def edit_item(request,id):
                 recurring_task=recurringStatus,
                 pomodoro_estimate=request.POST.get('pomodoro_estimate'),
                 pomodoro_completed=request.POST.get('pomodoro_completed'),
+                itemPriority=request.POST.get('itemPriority')
                 )
             return redirect('todolist:index')
             
@@ -132,6 +134,28 @@ def update_item_status(request):
         return redirect("You updated the db status ")
 
 @login_required(login_url='login/')
+def reload_with_filter(request,id):
+    if request.user.is_authenticated:
+        user = request.user
+        if request.method == 'GET':
+            #filter_value = (QueryDict(request.body)['filter_value'])
+            filter_value = id
+            print(filter_value)
+            print("entered reload with filter")
+            if filter_value:
+                recurring_items = Item.objects.filter(recurring_task='1',user=user,itemPriority=filter_value).order_by('status') 
+                completed_items = Item.objects.filter(status='1',user=user,itemPriority=filter_value).order_by('pomodoro_estimate')   
+                list_of_items = Item.objects.filter(recurring_task='0',user=user,status='0', itemPriority=filter_value).order_by('-create_date')
+                context = {'recurring_items': recurring_items, 'list_of_items': list_of_items, 'completed_items': completed_items, 'logged_user':user.username,}
+                checkAndUpdateRecurringTask()
+                return render(request, 'todolist/index.html', context)
+                
+            else:
+                return redirect("/todolist/")
+
+
+
+@login_required(login_url='login/')
 def deleteItem(request,id):
 
     item_id = id
@@ -147,7 +171,8 @@ def deleteItem(request,id):
                                status=deleted_item.status, 
                                recurring_task=deleted_item.recurring_task,
                                pomodoro_estimate=deleted_item.pomodoro_estimate,
-                               pomodoro_completed=deleted_item.pomodoro_completed)
+                               pomodoro_completed=deleted_item.pomodoro_completed,
+                               itemPriority=itemPriority)
         #deleteObj = DeletedItem(deleted_item)
         deleteObj.save()
         # delete it from items table 
@@ -279,4 +304,7 @@ def checkAndUpdateRecurringTask():
         print("pomodoro values reseted for recurring task")
         dateStatusCheck.objects.filter(id="1").update(today_date=today)
 
-
+'''
+def mappingTelegrambotUser():
+    # Get Todays Date
+'''
