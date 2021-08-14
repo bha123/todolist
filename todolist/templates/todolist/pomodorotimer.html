@@ -1,8 +1,7 @@
+{% load static %}
 
 
-
-
-
+{% block javascript %}
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 
@@ -17,7 +16,7 @@ var  pausingTime = 0;
 var  pauseFlag= 0;
 var countdownHandle;
 
-var audio = new Audio("{% static 'todolist/sounds/beep.mp3' %}");
+var audio = new Audio("{% static 'todolist/sounds/alarm_clock_2015.mp3' %}");
 
 $(document).ready(function() {
   onPomodoroTimer();
@@ -297,7 +296,7 @@ function pomodoroCountUpdate(id) {
 
 </script>   
 
-
+{% endblock %}
 
 <meta name="viewport" content="width=device-width, initial-scale=0.85">
 <link rel='stylesheet' type="text/css" href="{% static 'todolist/style.css' %}">
