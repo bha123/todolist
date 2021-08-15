@@ -45,8 +45,9 @@ def pushToGit(filePath, fileName):
     file = open(filePath, 'rb')
     content = file.read()
     print(filePath)
-    print(fileName)  
+    print(fileName)      
     repo.create_file(fileName, commit_message, content,  branch="main")
+    os.remove(filePath)
     return "Completed upload of DB"
 
 
