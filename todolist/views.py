@@ -59,7 +59,8 @@ def additem(request):
                 #print(form.cleaned_data['todo_item'])
                 user = user
                 todo_item = form.cleaned_data['todo_item']
-                create_date = form.cleaned_data['create_date']           
+                start_date = form.cleaned_data['start_date']   
+                create_date = datetime.date.today()        
                 due_date = form.cleaned_data['due_date']            
                 status = False
                 pomodoro_estimate = form.cleaned_data['pomodoro_estimate']
@@ -70,6 +71,7 @@ def additem(request):
                 itemPriority = form.cleaned_data['itemPriority']
                 item = Item(todo_item=todo_item, 
                             create_date=create_date, 
+                            start_date=start_date,
                             due_date=due_date, 
                             status=status,
                             recurring_task=recurring_task,
@@ -99,7 +101,7 @@ def edit_item(request,id):
             Item.objects.filter(pk=id).update(
                 user = request.POST.get('user'),
                 todo_item=request.POST.get('todo_item'), 
-                create_date=request.POST.get('create_date'), 
+                start_date=request.POST.get('start_date'), 
                 due_date=request.POST.get('due_date'), 
                 status=status,
                 recurring_task=recurringStatus,
