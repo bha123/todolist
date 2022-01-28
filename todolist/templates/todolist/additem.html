@@ -39,56 +39,61 @@
 </form>
 -->
 <form action="" method="post">
-  {% csrf_token %}
-  <div class="mb-3">
-      <label for="id_todo_item">Item:</label>
-      <textarea id="todo_item" type="text" name="todo_item" class="form-control" rows=3 required> </textarea>    
-  </div>
-  <div class="mb-3">
-      <label for="id_recurring_task">Recurring task:</label>
-      <input type="checkbox" name="recurring_task" id="id_recurring_task">
-  </div>
-  
-  <div>
-      <label for="id_start_date">Start date:</label>
-    </br>
-      <input type="datetime-local" name="start_date" value="" required="" id="id_start_date">
-  </div>
-  <div>
-    <label for="id_due_date">Due date:</label>
-    </br>
-    <input type="datetime-local" name="due_date" value="" required="" id="id_due_date">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="id_todo_item">Item:</label>
+        <textarea id="todo_item" type="text" name="todo_item" class="form-control" rows=3 required> </textarea>
+    </div>
+    <div class="mb-3">
+        <label for="id_recurring_task">Recurring task:</label>
+        <input type="checkbox" name="recurring_task" id="id_recurring_task">
+    </div>
+
+    <div class="mb-3">
+        <label for="id_autoCompletePomodoro">Auto Complete Pomodoro:</label>
+        <input type="checkbox" name="autoCompletePomodoro" id="id_autoCompletePomodoro">
     </div>
 
     <div>
-      <label for="id_pomodoro_estimate">Pomodoro estimate:</label>
-      </br>
-      <input type="number" name="pomodoro_estimate" required="" value="3" id="id_pomodoro_estimate">
+        <label for="id_start_date">Start date:</label>
+        </br>
+        <input type="datetime-local" name="start_date" value="" required="" id="id_start_date">
+    </div>
+    <div>
+        <label for="id_due_date">Due date:</label>
+        </br>
+        <input type="datetime-local" name="due_date" value="" required="" id="id_due_date">
+    </div>
+
+    <div>
+        <label for="id_pomodoro_estimate">Pomodoro estimate:</label>
+        </br>
+        <input type="number" name="pomodoro_estimate" required="" value="3" id="id_pomodoro_estimate">
     </div>
 
 
-  <div>
-    <label for="id_pomodoro_completed">Pomodoro completed:</label>
-  </br>
-    <input type="number" name="pomodoro_completed" required=""  value="0" id="id_pomodoro_completed">
-  </div>
+    <div>
+        <label for="id_pomodoro_completed">Pomodoro completed:</label>
+        </br>
+        <input type="number" name="pomodoro_completed" required="" value="0" id="id_pomodoro_completed">
+    </div>
 
-  <div>
-    <label for="id_itemPriority">Choose the Priority of Item</label>
-    <select id="id_itemPriority" name="itemPriority" size="1" >
-      <option value="1">1. Not Urgent Not Important</option>
-      <option value="2">2. Not Urgent Important</option>
-      <option value="3">3. Urgent Not Important</option>
-      <option value="4">4. Urgent Important</option>
-    </select>
-  </div>
+    <div>
+        <label for="id_itemPriority">Choose the Priority of Item</label>
+        <select id="id_itemPriority" name="itemPriority" size="1">
+            <option value="1">1. Not Urgent Not Important</option>
+            <option value="2">2. Not Urgent Important</option>
+            <option value="3">3. Urgent Not Important</option>
+            <option value="4">4. Urgent Important</option>
+        </select>
+    </div>
 
 
-</br>
+    </br>
 
-</br>
-<button type="submit" name="save" class="block" value="save"> Save</button>
-</br>
-</br>
-<a href= "{% url 'todolist:index' %}" ><button type="submit"  class="home">Home</button> </a>
+    </br>
+    <button type="submit" name="save" class="block" value="save"> Save</button>
+    </br>
+    </br>
+    <a href="{% url 'todolist:index' %}"><button type="submit" class="home">Home</button> </a>
 </form>

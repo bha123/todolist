@@ -26,6 +26,7 @@ class Item(models.Model):
     pomodoro_estimate = models.IntegerField('Pomodoro Estimate')
     pomodoro_completed = models.IntegerField('Pomodoro Completed')
     recurring_task = models.BooleanField('Recurring')
+    autoCompletePomodoro = models.BooleanField('Auto Pomodoro Complete')
     itemPriority = models.IntegerField('priority')
     tags = models.CharField(max_length=100)
 
@@ -44,7 +45,8 @@ class DeleteItem(models.Model):
     status = models.BooleanField('Completed')
     pomodoro_estimate = models.IntegerField('Pomodoro Estimate')
     pomodoro_completed = models.IntegerField('Pomodoro Completed')
-    recurring_task = models.BooleanField('Recurring')    
+    recurring_task = models.BooleanField('Recurring')
+    autoCompletePomodoro = models.BooleanField(' Auto Pomodoro Complete')
     itemPriority = models.IntegerField('priority')
     tags = models.CharField(max_length=100)
 

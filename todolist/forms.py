@@ -8,7 +8,8 @@ from django.contrib.admin import widgets
 class ItemForm(forms.Form):
     todo_item =  forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":20})) 
     start_date = forms.DateTimeField(initial=datetime.date.today)  
-    recurring_task = forms.BooleanField(required=False,widget=forms.RadioSelect())    
+    recurring_task = forms.BooleanField(required=False,widget=forms.RadioSelect())
+    autoCompletePomodoro = forms.BooleanField(required=False,widget=forms.RadioSelect())
     due_date = forms.DateTimeField(initial=datetime.date.today)
     pomodoro_estimate = forms.IntegerField()
     pomodoro_completed = forms.IntegerField()

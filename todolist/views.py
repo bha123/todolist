@@ -66,6 +66,7 @@ def additem(request):
                 pomodoro_estimate = form.cleaned_data['pomodoro_estimate']
                 pomodoro_completed = form.cleaned_data['pomodoro_completed']
                 recurring_task = form.cleaned_data['recurring_task']
+                autoCompletePomodoro = form.cleaned_data['autoCompletePomodoro']
                 if recurring_task == None:
                     recurring_task = False
                 itemPriority = form.cleaned_data['itemPriority']
@@ -77,6 +78,7 @@ def additem(request):
                             recurring_task=recurring_task,
                             pomodoro_estimate=pomodoro_estimate,
                             pomodoro_completed=pomodoro_completed,
+                            autoCompletePomodoro=autoCompletePomodoro,
                             user=user,
                             itemPriority=itemPriority)
                 item.save()
@@ -125,6 +127,8 @@ def update_item_status(request):
         if request.method == 'POST':
             item_id = int(QueryDict(request.body)['id'])
             updateItem = Item.objects.get(id=item_id)
+            # Check the condition for pomodoro complete 
+            
             update_status = False
             present_status = updateItem.status
             if present_status == False:
@@ -205,6 +209,11 @@ def updatePomodoroCount(request):
             count = pomodoro_item.pomodoro_completed  + 1
             print(count)
             Item.objects.filter(pk=item_id).update(pomodoro_completed=count)
+
+            if pomodoro_item.autoCompletePomodoro and pomodoro_item.pomodoro_estimate == count:
+                Item.objects.filter(pk=item_id).update(status=True)
+
+            print("The pomodoro status " + str(pomodoro_item.autoCompletePomodoro))
             
             itemDict = {'id':item_id, 'pomdoro_completed':count}
 
