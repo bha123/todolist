@@ -95,11 +95,15 @@ def edit_item(request,id):
     if request.user.is_authenticated:
         user = request.user
         if request.method == "POST":
-            recurringStatus = status = False # 040 6810 2816 2845 2840
+            recurringStatus = status = False # 040 6810 2816 2845 2840          
             if request.POST.get('recurring_task') == 'on':
                 recurringStatus = True
             if request.POST.get('status') == 'on':
                 status = True
+            if request.POST.get('autoCompletePomodoro') == 'on':
+                autoCompletePomodoroValue = True
+            else:
+                autoCompletePomodoroValue = False
             Item.objects.filter(pk=id).update(
                 user = request.POST.get('user'),
                 todo_item=request.POST.get('todo_item'), 
@@ -109,7 +113,8 @@ def edit_item(request,id):
                 recurring_task=recurringStatus,
                 pomodoro_estimate=request.POST.get('pomodoro_estimate'),
                 pomodoro_completed=request.POST.get('pomodoro_completed'),
-                itemPriority=request.POST.get('itemPriority')
+                itemPriority=request.POST.get('itemPriority'),
+                autoCompletePomodoro=autoCompletePomodoroValue,  
                 )
             return redirect('todolist:index')
             
