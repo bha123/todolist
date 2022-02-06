@@ -37,7 +37,7 @@
     function filter_item(value){
 
         console.log("Selected value "+ value)
-            
+
         if(value != 0)
         {
             $(document).ready(function()
@@ -55,7 +55,7 @@
         }
         else{
             location.reload();
-        }    
+        }
     };
 
 
@@ -79,6 +79,31 @@
         });
     };
 
+    function openPage(pageName, elmnt) {
+        // Hide all elements with class="tabcontent" by default */
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        // Remove the background color of all tablinks/buttons
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].style.backgroundColor = "";
+        }
+
+        // Show the specific tab content
+        document.getElementById(pageName).style.display = "block";
+
+        // Add the specific color to the button used to open the tab content
+        elmnt.style.backgroundColor = color;
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+
+
 
 </script>
 
@@ -86,8 +111,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=0.5">
 <link rel='stylesheet' type="text/css" href="{% static 'todolist/style.css' %}">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+<!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">-->
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
 <h1>Bharath Todo List application</h1>
 
@@ -111,268 +138,311 @@
 <div>
     <label for="id_itemPriority">Priority Filter</label>
     <select id="id_checkItemPriority" name="checkItemPriority" style="width:100%; position:center; height:50px;border: 6px solid #000; font-size:20px;" size="1" onchange="filter_item(value)">
-      <option value="0">All</option> 
-      <option value="1">1. Not Urgent Not Important</option>
-      <option value="2">2. Not Urgent Important</option>
-      <option value="3">3. Urgent Not Important</option>
-      <option value="4">4. Urgent Important</option>
+        <option value="0">All</option>
+        <option value="1">1. Not Urgent Not Important</option>
+        <option value="2">2. Not Urgent Important</option>
+        <option value="3">3. Urgent Not Important</option>
+        <option value="4">4. Urgent Important</option>
     </select>
-  </div>
+</div>
 
 
-<h2>Recurring Tasks</h2>
+</br>
+</br>
 
-<ui class="list-group">
 
 
-    {% if recurring_items %}
-    {% for item in recurring_items %}
-    <li class="list-group-item flex-row align-items-start " value="{{item.itemPriority}}" id="itemMain">
-        <!-- <a href="#" class="list-group-item list-group-item-action flex-column align-items-start"> -->
-        <div class="d-flex flex-column align-items-between">
 
-            <div class="d-flex flex-row align-items-between">
-                {% if item.status %}
-                <div class="p-2 flex-grow-1">
-                    <h3 class="mb-1">
-                        <input class="form-check-input"
-                            onclick="toggle_status('{{item.todo_item}}','{{item.status}}', '{{item.id}}')"
-                            type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            {{ item.todo_item}}
-                        </label>
-                    </h3>
+
+<button class="tablink" onclick="openPage('Recurring',this)">Recurring</button>
+<button class="tablink" onclick="openPage('Unit', this )" >Unit</button>
+<button class="tablink" onclick="openPage('Completed', this)">Completed</button>
+
+
+<div id="Recurring" class="tabcontent">
+
+
+    <h2 class="heading-1"> Recurring Tasks </h2>
+    <ui class="list-group">
+
+
+        {% if recurring_items %}
+        {% for item in recurring_items %}
+        <li class="list-group-item flex-row align-items-start " value="{{item.itemPriority}}" id="itemMain">
+
+            <div class="d-flex flex-column align-items-between">
+
+                <div class="d-flex flex-row align-items-between">
+                    {% if item.status %}
+                    <div class="p-2 flex-grow-1">
+                        <h3 class="mb-1">
+                            <input class="form-check-input"
+                                   onclick="toggle_status('{{item.todo_item}}','{{item.status}}', '{{item.id}}')"
+                                   type="checkbox" value="" id="flexCheckChecked" checked>
+                            <label class="form-check-label" for="flexCheckChecked">
+                                {{ item.todo_item}}
+                            </label>
+                        </h3>
+                    </div>
+                    <div class="ms-auto p-2">
+                        <a href="pomodorotimer/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">⏲️</div></a>
+                    </div>
+                    {% else %}
+                    <div class="p-2 flex-grow-1">
+                        <h3 class="mb-1">
+                            <input class="form-check-input"
+                                   onclick="toggle_status('{{item.todo_item}}','{{item.status}}', '{{item.id}}')"
+                                   type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                {{ item.todo_item}}
+                            </label>
+                        </h3>
+                    </div>
+                    <div class="ms-auto p-2">
+                        <a href="pomodorotimer/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">⏲️</div></a>
+                    </div>
+                    {% endif %}
                 </div>
-                <div class="ms-auto p-2">
-                    <a href="pomodorotimer/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">⏲️</div></a>
+                <div class="d-flex flex-row align-items-between">
+                    <div class="p-2 flex-grow-1">
+                        <p class="mb-1" style="font-size: 150%;"> Due Date: {{item.due_date}}</p>
+                    </div>
+                    <div class="ms-auto p-2">
+                        <a href="editItem/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">✏️</div></a>
+                    </div>
                 </div>
-                {% else %}
-                <div class="p-2 flex-grow-1">
-                    <h3 class="mb-1">
-                        <input class="form-check-input"
-                            onclick="toggle_status('{{item.todo_item}}','{{item.status}}', '{{item.id}}')"
-                            type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            {{ item.todo_item}}
-                        </label>
-                    </h3>
+                <div class="d-flex  flex-row align-items-between">
+                    <div class="p-2 flex-grow-1">
+                        <p class="mb-1" style="font-size: 150%;">
+                            Pomodoro Estimated/Completed:
+                            {{item.pomodoro_estimate}} / {{item.pomodoro_completed}}
+                        </p>
+                    </div>
                 </div>
-                <div class="ms-auto p-2">
-                    <a href="pomodorotimer/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">⏲️</div></a>
-                </div>
-                {% endif %}
-            </div>
-            <div class="d-flex flex-row align-items-between">
-                <div class="p-2 flex-grow-1">
-                    <p class="mb-1" style="font-size: 150%;"> Due Date: {{item.due_date}}</p>
-                </div>
-                <div class="ms-auto p-2">
-                    <a href="editItem/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">✏️</div></a>
-                </div>
-            </div>
-            <div class="d-flex  flex-row align-items-between">
-                <div class="p-2 flex-grow-1">
-                    <p class="mb-1" style="font-size: 150%;">Pomodoro Estimated/Completed:
-                        {{item.pomodoro_estimate}} / {{item.pomodoro_completed}}</p>
-                </div>
-            </div>
 
-            <div class="d-flex  flex-row align-items-between">
-                <div class="p-2 flex-grow-1">
-                    <p class="mb-1" style="font-size: 150%;">Priority: {{item.itemPriority}}</p>
-                </div>
-                <div class="ms-auto p-2">
-                    <a href="deleteItem/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">🗑️</div></a>
-                </div>
-            </div>
-        </div>
-
-
-    </li>
-
-    {% endfor %}
-
-
-
-
-    {% else %}
-    <p> No tasks are available</p>
-    {% endif %}
-    </li>
-</ui>
-
-
-<h2>Unit Tasks</h2>
-<ui class="list-group">
-
-
-
-    {% if list_of_items %}
-    {% for item in list_of_items %}
-    <li class="list-group-item flex-row align-items-start " value="{{item.itemPriority}}" id="itemMain">
-        <!-- <a href="#" class="list-group-item list-group-item-action flex-column align-items-start"> -->
-        <div class="d-flex flex-column align-items-between">
-
-            <div class="d-flex flex-row align-items-between" >
-                {% if item.status %}
-                <div class="p-2 flex-grow-1">
-                    <h3 class="mb-1">
-                        <input class="form-check-input"
-                            onclick="toggle_status('{{item.todo_item}}','{{item.status}}', '{{item.id}}')"
-                            type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            {{ item.todo_item}}
-                        </label>
-                    </h3>
-                </div>
-                <div class="ms-auto p-2">
-                    <a href="pomodorotimer/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">⏲️</div></a>
-                </div>
-                {% else %}
-                <div class="p-2 flex-grow-1">
-                    <h3 class="mb-1">
-                        <input class="form-check-input"
-                            onclick="toggle_status('{{item.todo_item}}','{{item.status}}', '{{item.id}}')"
-                            type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            {{ item.todo_item}}
-                        </label>
-                    </h3>
-                </div>
-                <div class="ms-auto p-2">
-                    <a href="pomodorotimer/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">⏲️</div></a>
-                </div>
-                {% endif %}
-            </div>
-            <div class="d-flex flex-row align-items-between">
-                <div class="p-2 flex-grow-1">
-                    <p class="mb-1" style="font-size: 150%;"> Start Date: {{item.start_date}}</p>
-                </div>
-                <div class="p-2 flex-grow-1">
-                    <p class="mb-1" style="font-size: 150%;"> Due Date: {{item.due_date}}</p>
-                </div>
-                <div class="ms-auto p-2">
-                    <a href="editItem/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">✏️</div></a>
-                </div>
-            </div>
-            <div class="d-flex  flex-row align-items-between">
-                <div class="p-2 flex-grow-1">
-                    <p class="mb-1" style="font-size: 150%;">Pomodoro Estimated/Completed:
-                        {{item.pomodoro_estimate}} / {{item.pomodoro_completed}}</p>
+                <div class="d-flex  flex-row align-items-between">
+                    <div class="p-2 flex-grow-1">
+                        <p class="mb-1" style="font-size: 150%;">Priority: {{item.itemPriority}}</p>
+                    </div>
+                    <div class="ms-auto p-2">
+                        <a href="deleteItem/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">🗑️</div></a>
+                    </div>
                 </div>
             </div>
 
-            
-            <div class="d-flex  flex-row align-items-between">
-                <div class="p-2 flex-grow-1">
-                    <p class="mb-1" style="font-size: 150%;">Priority: {{item.itemPriority}}</p>
+
+        </li>
+
+        {% endfor %}
+
+
+
+
+        {% else %}
+        <p> No tasks are available</p>
+        {% endif %}
+        </li>
+    </ui>
+
+
+
+
+
+
+</div>
+
+<div id="Unit" class="tabcontent">
+
+
+    
+    <ui class="list-group">
+
+        <h2 class="heading-1">Unit Tasks</h2>
+
+        {% if list_of_items %}
+        {% for item in list_of_items %}
+        <li class="list-group-item flex-row align-items-start " value="{{item.itemPriority}}" id="itemMain">
+
+            <div class="d-flex flex-column align-items-between">
+
+                <div class="d-flex flex-row align-items-between">
+                    {% if item.status %}
+                    <div class="p-2 flex-grow-1">
+                        <h3 class="mb-1">
+                            <input class="form-check-input"
+                                   onclick="toggle_status('{{item.todo_item}}','{{item.status}}', '{{item.id}}')"
+                                   type="checkbox" value="" id="flexCheckChecked" checked>
+                            <label class="form-check-label" for="flexCheckChecked">
+                                {{ item.todo_item}}
+                            </label>
+                        </h3>
+                    </div>
+                    <div class="ms-auto p-2">
+                        <a href="pomodorotimer/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">⏲️</div></a>
+                    </div>
+                    {% else %}
+                    <div class="p-2 flex-grow-1">
+                        <h3 class="mb-1">
+                            <input class="form-check-input"
+                                   onclick="toggle_status('{{item.todo_item}}','{{item.status}}', '{{item.id}}')"
+                                   type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                {{ item.todo_item}}
+                            </label>
+                        </h3>
+                    </div>
+                    <div class="ms-auto p-2">
+                        <a href="pomodorotimer/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">⏲️</div></a>
+                    </div>
+                    {% endif %}
                 </div>
-                <div class="ms-auto p-2">
-                    <a href="deleteItem/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">🗑️</div></a>
+                <div class="d-flex flex-row align-items-between">
+                    <div class="p-2 flex-grow-1">
+                        <p class="mb-1" style="font-size: 150%;"> Start Date: {{item.start_date}}</p>
+                    </div>
+                    <div class="p-2 flex-grow-1">
+                        <p class="mb-1" style="font-size: 150%;"> Due Date: {{item.due_date}}</p>
+                    </div>
+                    <div class="ms-auto p-2">
+                        <a href="editItem/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">✏️</div></a>
+                    </div>
+                </div>
+                <div class="d-flex  flex-row align-items-between">
+                    <div class="p-2 flex-grow-1">
+                        <p class="mb-1" style="font-size: 150%;">
+                            Pomodoro Estimated/Completed:
+                            {{item.pomodoro_estimate}} / {{item.pomodoro_completed}}
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="d-flex  flex-row align-items-between">
+                    <div class="p-2 flex-grow-1">
+                        <p class="mb-1" style="font-size: 150%;">Priority: {{item.itemPriority}}</p>
+                    </div>
+                    <div class="ms-auto p-2">
+                        <a href="deleteItem/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">🗑️</div></a>
+                    </div>
                 </div>
             </div>
-        </div>
 
 
-    </li>
+        </li>
 
-    {% endfor %}
-
-
-
-
-    {% else %}
-    <p> No tasks are available</p>
-    {% endif %}
-    </li>
-</ui>
-<h2>Completed Tasks</h2>
-<ui class="list-group">
+        {% endfor %}
 
 
 
-    {% if completed_items %}
-    {% for item in completed_items %}
-    <li class="list-group-item flex-row align-items-start " value="{{item.itemPriority}}" id="itemMain">
-        <!-- <a href="#" class="list-group-item list-group-item-action flex-column align-items-start"> -->
-        <div class="d-flex flex-column align-items-between" >
 
-            <div class="d-flex flex-row align-items-between">
-                {% if item.status %}
-                <div class="p-2 flex-grow-1">
-                    <h3 class="mb-1">
-                        <input class="form-check-input"
-                            onclick="toggle_status('{{item.todo_item}}','{{item.status}}', '{{item.id}}')"
-                            type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            {{ item.todo_item}}
-                        </label>
-                    </h3>
+        {% else %}
+        <p> No tasks are available</p>
+        {% endif %}
+        </li>
+    </ui>
+
+
+
+</div>
+
+<div id="Completed" class="tabcontent">
+    <h2 class="heading-1">Completed Tasks</h2>
+    <ui class="list-group">
+
+
+
+        {% if completed_items %}
+        {% for item in completed_items %}
+        <li class="list-group-item flex-row align-items-start " value="{{item.itemPriority}}" id="itemMain">
+
+            <div class="d-flex flex-column align-items-between">
+
+                <div class="d-flex flex-row align-items-between">
+                    {% if item.status %}
+                    <div class="p-2 flex-grow-1">
+                        <h3 class="mb-1">
+                            <input class="form-check-input"
+                                   onclick="toggle_status('{{item.todo_item}}','{{item.status}}', '{{item.id}}')"
+                                   type="checkbox" value="" id="flexCheckChecked" checked>
+                            <label class="form-check-label" for="flexCheckChecked">
+                                {{ item.todo_item}}
+                            </label>
+                        </h3>
+                    </div>
+                    <div class="ms-auto p-2">
+                        <a href="pomodorotimer/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">⏲️</div></a>
+                    </div>
+                    {% else %}
+                    <div class="p-2 flex-grow-1">
+                        <h3 class="mb-1">
+                            <input class="form-check-input"
+                                   onclick="toggle_status('{{item.todo_item}}','{{item.status}}', '{{item.id}}')"
+                                   type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                {{ item.todo_item}}
+                            </label>
+                        </h3>
+                    </div>
+                    <div class="ms-auto p-2">
+                        <a href="pomodorotimer/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">⏲️</div></a>
+                    </div>
+                    {% endif %}
                 </div>
-                <div class="ms-auto p-2">
-                    <a href="pomodorotimer/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">⏲️</div></a>
+                <div class="d-flex flex-row align-items-between">
+                    <div class="p-2 flex-grow-1">
+                        <p class="mb-1" style="font-size: 150%;"> Start Date: {{item.create_date}}</p>
+                    </div>
+                    <div class="p-2 flex-grow-1">
+                        <p class="mb-1" style="font-size: 150%;"> Due Date: {{item.due_date}}</p>
+                    </div>
+                    <div class="ms-auto p-2">
+                        <a href="editItem/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">✏️</div></a>
+                    </div>
                 </div>
-                {% else %}
-                <div class="p-2 flex-grow-1">
-                    <h3 class="mb-1">
-                        <input class="form-check-input"
-                            onclick="toggle_status('{{item.todo_item}}','{{item.status}}', '{{item.id}}')"
-                            type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            {{ item.todo_item}}
-                        </label>
-                    </h3>
+
+
+                <div class="d-flex  flex-row align-items-between">
+                    <div class="p-2 flex-grow-1">
+                        <p class="mb-1" style="font-size: 150%;">Priority: {{item.priority}}</p>
+                    </div>
+                    <div class="ms-auto p-2">
+                        <a href="deleteItem/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">🗑️</div></a>
+                    </div>
                 </div>
-                <div class="ms-auto p-2">
-                    <a href="pomodorotimer/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">⏲️</div></a>
+
+                <div class="d-flex  flex-row align-items-between">
+                    <div class="p-2 flex-grow-1">
+                        <p class="mb-1" style="font-size: 150%;">
+                            Pomodoro Estimated/Completed:
+                            {{item.pomodoro_estimate}} / {{item.pomodoro_completed}}
+                        </p>
+                    </div>
+
                 </div>
-                {% endif %}
+
             </div>
-            <div class="d-flex flex-row align-items-between">
-                <div class="p-2 flex-grow-1">
-                    <p class="mb-1" style="font-size: 150%;"> Start Date: {{item.create_date}}</p>
-                </div>
-                <div class="p-2 flex-grow-1">
-                    <p class="mb-1" style="font-size: 150%;"> Due Date: {{item.due_date}}</p>
-                </div>
-                <div class="ms-auto p-2">
-                    <a href="editItem/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">✏️</div></a>
-                </div>
-            </div>
-
-            
-            <div class="d-flex  flex-row align-items-between">
-                <div class="p-2 flex-grow-1">
-                    <p class="mb-1" style="font-size: 150%;">Priority: {{item.priority}}</p>
-                </div>
-                <div class="ms-auto p-2">
-                    <a href="deleteItem/{{item.id}}" style="text-decoration:none"><div style="font-size:2.1rem;width:100%;text-align:center;">🗑️</div></a>
-                </div>
-            </div>
-
-            <div class="d-flex  flex-row align-items-between">
-                <div class="p-2 flex-grow-1">
-                    <p class="mb-1" style="font-size: 150%;">Pomodoro Estimated/Completed:
-                        {{item.pomodoro_estimate}} / {{item.pomodoro_completed}}</p>
-                </div>
-
-            </div>
-
-        </div>
 
 
-    </li>
+        </li>
 
-    {% endfor %}
+        {% endfor %}
 
 
 
 
-    {% else %}
-    <p> No tasks are available</p>
-    {% endif %}
-    </li>
-</ui>
+        {% else %}
+        <p> No tasks are available</p>
+        {% endif %}
+        </li>
+    </ui>
+</div>
+
+
+<!-- Tabs content -->
+
+
+
+
 
 
 

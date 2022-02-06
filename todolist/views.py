@@ -183,7 +183,9 @@ def deleteItem(request,id):
                                recurring_task=deleted_item.recurring_task,
                                pomodoro_estimate=deleted_item.pomodoro_estimate,
                                pomodoro_completed=deleted_item.pomodoro_completed,
-                               itemPriority=deleted_item.itemPriority)
+                               itemPriority=deleted_item.itemPriority,
+                               autoCompletePomodoro=deleted_item.pomodoro_completed
+                               )
         #deleteObj = DeletedItem(deleted_item)
         deleteObj.save()
         # delete it from items table 
