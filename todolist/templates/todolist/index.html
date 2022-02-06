@@ -7,6 +7,13 @@
 
     console.log("Create item ");
 
+    window.onload = function () {
+        document.getElementById("recurringButton").click();
+    };
+
+
+
+
     $.ajax({
 
     });
@@ -154,7 +161,7 @@
 
 
 
-<button class="tablink" onclick="openPage('Recurring',this)">Recurring</button>
+<button class="tablink" id="recurringButton" onclick="openPage('Recurring',this)">Recurring</button>
 <button class="tablink" onclick="openPage('Unit', this )" >Unit</button>
 <button class="tablink" onclick="openPage('Completed', this)">Completed</button>
 
